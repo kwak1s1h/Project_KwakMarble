@@ -8,7 +8,7 @@
         private const string SERVER_PACKET_DIR = ROOT_DIR + "Server\\Network\\Packet\\Server";
 
         private const string SERVER_OUT_DIR = ROOT_DIR + "Server\\Server\\PacketManager.cs";
-        private const string CLIENT_OUT_DIR = ROOT_DIR + "Client\\Assets\\01.Scripts\\Packet\\PacketManger.cs";
+        private const string CLIENT_OUT_DIR = ROOT_DIR + "Client\\Assets\\01.Scripts\\Network\\Packet\\PacketManger.cs";
 
         private const string TEMPLATE = @"using Network;
 using Network.Packet;
@@ -91,11 +91,16 @@ namespace Server
 
         static void Main(string[] args)
         {
-            DirectoryInfo clientPacketDir = new DirectoryInfo(CLIENT_PACKET_DIR);
-            string[] fileNames = Directory.GetFiles(CLIENT_PACKET_DIR, "*.cs");
+            GeneratePacketManager(CLIENT_PACKET_DIR, SERVER_OUT_DIR);
+        }
+
+        private static void GeneratePacketManager(string packetDir, string outDir)
+        {
+            DirectoryInfo clientPacketDir = new DirectoryInfo(packetDir);
+            string[] fileNames = Directory.GetFiles(packetDir, "*.cs");
 
             string register = string.Empty;
-            for(int i = 0; i < fileNames.Length; i++) 
+            for (int i = 0; i < fileNames.Length; i++)
             {
                 string fileName = fileNames[i];
                 if (File.Exists(fileName))
@@ -107,9 +112,9 @@ namespace Server
 
             string result = TEMPLATE.Replace("REGISTER_TEXT", register.TrimEnd());
 
-            if(File.Exists(SERVER_OUT_DIR))
+            if (File.Exists(outDir))
             {
-                File.WriteAllText(SERVER_OUT_DIR, result);
+                File.WriteAllText(outDir, result);
             }
         }
     }
