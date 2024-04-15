@@ -8,9 +8,11 @@
         private const string SERVER_PACKET_DIR = ROOT_DIR + "Server\\Network\\Packet\\Server";
 
         private const string SERVER_OUT_DIR = ROOT_DIR + "Server\\Server\\PacketManager.cs";
-        private const string CLIENT_OUT_DIR = ROOT_DIR + "Client\\Assets\\01.Scripts\\Network\\Packet\\PacketManger.cs";
+        private const string CLIENT_OUT_DIR = ROOT_DIR + "Client\\Assets\\01.Scripts\\Network\\Packet\\PacketManager.cs";
 
         private const string TEMPLATE = @"using Network;
+using System;
+using System.Collections.Generic;
 using Network.Packet;
 using Network.Packet.Client;
 using Network.Packet.Server;
@@ -92,10 +94,16 @@ namespace Server
         static void Main(string[] args)
         {
             GeneratePacketManager(CLIENT_PACKET_DIR, SERVER_OUT_DIR);
+            Console.WriteLine();
+            GeneratePacketManager(SERVER_PACKET_DIR, CLIENT_OUT_DIR);
         }
 
         private static void GeneratePacketManager(string packetDir, string outDir)
         {
+            Console.WriteLine($"[Debug] Start Generate PacketManager.cs");
+            Console.WriteLine($"[Debug] PacketDir: {packetDir}");
+            Console.WriteLine($"[Debug] OutDir:    {outDir}");
+
             DirectoryInfo clientPacketDir = new DirectoryInfo(packetDir);
             string[] fileNames = Directory.GetFiles(packetDir, "*.cs");
 
@@ -116,6 +124,12 @@ namespace Server
             {
                 File.WriteAllText(outDir, result);
             }
+            else
+            {
+                Console.WriteLine($"[Error] File {outDir} Dosen't Exits!");
+            }
+
+            Console.WriteLine($"[Debug] Generate PacketManager.cs Completed. File: {outDir}");
         }
     }
 }
