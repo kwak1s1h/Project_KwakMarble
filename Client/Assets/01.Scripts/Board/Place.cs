@@ -16,9 +16,10 @@ public class Place : MonoBehaviour
             return;
         }
 
-            if (seq.IsComplete())
+        if (seq.IsPlaying())
         {
             seq.Kill();
+            seq = null;
             Vector3 pos = transform.position;
             pos.y = yPos;
             transform.position = pos;
@@ -29,7 +30,8 @@ public class Place : MonoBehaviour
     {
         seq = DOTween.Sequence();
         float yPos = transform.position.y;
-        seq.Append(transform.DOMoveY(transform.position.y - 5, 0.1f));
-        seq.Append(transform.DOMoveY(yPos, 0.3f)).SetEase(Ease.OutElastic);
+        seq.Append(transform.DOMoveY(transform.position.y - 2, 0.1f));
+        seq.Append(transform.DOMoveY(yPos, 0.15f)).SetEase(Ease.OutElastic);
+        seq.OnComplete(() => seq = null);
     }
 }
