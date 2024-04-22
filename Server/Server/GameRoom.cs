@@ -1,52 +1,47 @@
-﻿using Network.Packet.Server;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Server.Packet.Client;
+using Server.Packet.Server;
 using Server.Session;
+using ServerCore;
 
 namespace Server
 {
-    public class GameRoom
+    class GameRoom
     {
-        private List<ClientSession> _sessions = new List<ClientSession>();
-        private ClientSession _hostSession;
+        List<ClientSession> _sessions = new List<ClientSession>();
+        object _lock = new object();
 
-        private object _lock = new object();
-
-        public GameRoom(ClientSession hostSession)
-        {
-            _sessions = new List<ClientSession> { hostSession };
-            _hostSession = hostSession;
-            hostSession.Room = this;
-            hostSession.Send(CreateRoomInfoPacket().Write());
-        }
 
         public void Enter(ClientSession session)
         {
-            lock (_lock)
+            lock(_lock)
             {   // 신규 유저 추가
                 _sessions.Add(session);
-                session.Room = this;
+                Console.WriteLine($"세션 추가 : {session.SessionId}");
 
-                // 신규 유저 접속시, 룸정보 전송
-                S_RoomInfo roomInfo = CreateRoomInfoPacket();
-                session.Send(roomInfo.Write());
+                session.Room = this;
+                
+                // 신규 유저 접속시, 기존 유저 목록 전송
+                //S_PlayerList players = new S_PlayerList();
+                //foreach (ClientSession s in _sessions)
+                //{
+                //    players.players.Add(new S_PlayerList.Player() {
+                //        isSelf = (s == session),
+                //        playerId = s.SessionId,
+                //    });
+                //}
+                //session.Send(players.Write());
 
                 // 신규 유저 접속 전체 공지
-                S_EnterRoom enterInfo = new S_EnterRoom();
-                enterInfo.player = new Player { id = session.SessionId };
-                BroadCast(enterInfo.Write());
+                //S_BroadcastEnterGame enter = new S_BroadcastEnterGame();
+                //enter.playerId = session.SessionId;
+                //BroadCast(enter.Write());
             }
 
-        }
-
-        private S_RoomInfo CreateRoomInfoPacket()
-        {
-            S_RoomInfo roomInfo = new S_RoomInfo();
-            roomInfo.hostInfo = _hostSession.PlayerInfo;
-            foreach (ClientSession s in _sessions)
-            {
-                roomInfo.players.Add(s.PlayerInfo);
-            }
-
-            return roomInfo;
         }
 
         public void Leave(ClientSession session)
@@ -57,22 +52,21 @@ namespace Server
                 _sessions.Remove(session);
 
                 // 모두에게 알린다
-                S_LeaveRoom leaveInfo = new S_LeaveRoom();
-                leaveInfo.playerId = session.SessionId;
-                session.Room = null;
-                BroadCast(leaveInfo.Write());
+                //S_BroadcastLeaveGame leave = new S_BroadcastLeaveGame();
+                //leave.playerId = session.SessionId;
+                //BroadCast(leave.Write());
             }
         }
 
-        public void BroadCast(ArraySegment<byte> segment)
+        public void BroadCast(ArraySegment<byte> segment) 
         {
             ArraySegment<byte> packet = segment;
 
             lock (_lock) // 
             {
-                foreach (ClientSession session in _sessions)
+                foreach(ClientSession s in _sessions)
                 {
-                    session.Send(segment);    // 리스트에 들어있는 모든 클라에 전송
+                    s.Send(segment);    // 리스트에 들어있는 모든 클라에 전송
                 }
             }
         }

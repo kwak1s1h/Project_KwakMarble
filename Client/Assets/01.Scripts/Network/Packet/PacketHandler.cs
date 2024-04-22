@@ -1,24 +1,26 @@
-using Network;
-using Network.Packet;
+﻿using DummyClient.Session;
+using Server.Packet.Client;
+using Server.Packet.Server;
+using ServerCore;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PacketHandler
+namespace DummyClient
 {
-    public static void S_EnterRoomHandler(PacketSession session, IPacket packet)
+    class PacketHandler
     {
-        throw new NotImplementedException();
-    }
+        public static void S_SessionInfoHandler(PacketSession session, IPacket packet)
+        {
+            S_SessionInfo sessionInfo = packet as S_SessionInfo;
+            ServerSession serverSession = session as ServerSession;
+            Debug.Log(sessionInfo.sessionId);
+            serverSession.SessionId = sessionInfo.sessionId;
 
-    public static void S_LeaveRoomHandler(PacketSession session, IPacket packet)
-    {
-        throw new NotImplementedException();
-    }
-
-    public static void S_RoomInfoHandler(PacketSession session, IPacket packet)
-    {
-        throw new NotImplementedException();
+            C_SetNickname setName = new C_SetNickname();
+            setName.value = "asdf";
+            session.Send(setName.Write());
+        }
     }
 }
+
+
