@@ -38,4 +38,9 @@ public class Board : MonoSingleton<Board>
         places[idx].WavePlace();
     }
     public int BoardSize => places.Count;
+
+    public void CreateBuilding(int idx, BuildingType type)
+    {
+
+    }
 }

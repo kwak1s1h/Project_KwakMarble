@@ -13,6 +13,11 @@ public class Charater : MonoBehaviour
     {
         _mapIdx = 0;
         transform.position = Board.Instance.GetPlacePos(_mapIdx);
+
+        OnMoveEndComplete += () =>
+        {
+            UIManager.Instance.GetUI<CreateBuildingUI>();
+        };
     }
 
     private void Update()
@@ -30,11 +35,7 @@ public class Charater : MonoBehaviour
         transform.DOJump(Board.Instance.GetPlacePos(_mapIdx), 1f, 1, 0.1f).OnComplete(() =>
           {
               value--;
-              if (value > 0)
-                  ContinueJump(value);
-              else
-                  OnMoveEndComplete?.Invoke();
-
+              ContinueJump(value);
               Board.Instance.WavePlace(_mapIdx);
           });
     }
