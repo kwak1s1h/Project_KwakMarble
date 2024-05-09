@@ -34,6 +34,7 @@ public class CreateBuildingUI : UIBase
     public void CompleteBuilding()
     {
         //서버에 구매한 내용 보내기
+        Board.Instance.CreateBuilding(GameManager.Instance.charaterDic[1].MapIdx, buildingType);
         TurnOff();
         Debug.Log(buildingType);
     }
@@ -46,7 +47,7 @@ public class CreateBuildingUI : UIBase
     public void ChangeBuildInfo(BuildingInfo info)
     {
         buildingType ^= info.type;
-        if((buildingType & info.type) > 0)
+        if ((buildingType & info.type) > 0)
         {
             Money += info.pay;
         }
@@ -59,7 +60,7 @@ public class CreateBuildingUI : UIBase
     public override void TurnOn()
     {
         group.alpha = 0;
-        transform.localScale = new Vector3(1,1,1);
+        transform.localScale = new Vector3(1, 1, 1);
         group.DOFade(1f, 0.3f);
         buildingType = BuildingType.None;
         buyMoneyTxt.text = skipTxt;
