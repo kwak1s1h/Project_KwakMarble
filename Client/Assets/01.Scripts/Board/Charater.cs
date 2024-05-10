@@ -9,6 +9,7 @@ public class Charater : MonoBehaviour
     public event Action OnMoveEndComplete;
 
     private int _mapIdx;
+    public int MapIdx => _mapIdx;
     private void Start()
     {
         _mapIdx = 0;

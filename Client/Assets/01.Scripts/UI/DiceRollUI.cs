@@ -12,7 +12,8 @@ public class DiceRollUI : UIBase
     {
         int fir = Random.Range(1, 7);
         int sec = Random.Range(1, 7);
-        print($"{fir}/{sec}");
+        print($"{fir }/{sec}");
+        Board.Instance.RollDice(new int[2] { fir, sec });
     }
 
     public override void TurnOff()
