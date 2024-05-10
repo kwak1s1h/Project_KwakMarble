@@ -45,11 +45,12 @@ public class Board : MonoSingleton<Board>
         }
     }
 
-    public Charater SpawnCharater()
+    public Charater SpawnCharater(int uuid)
     {
         Vector3 spawnPos = places[0].placeTrm.position;
         spawnPos.y += 50;
         Charater p = Instantiate(playerPref,spawnPos,Quaternion.identity);
+        p.Init(uuid);
         p.transform.DOMoveY(places[0].placeTrm.position.y, 0.5f);
         return p;
     }
