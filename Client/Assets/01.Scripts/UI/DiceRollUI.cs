@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using Server.Packet.Client;
 
 public class DiceRollUI : UIBase
 {
@@ -10,10 +11,12 @@ public class DiceRollUI : UIBase
     [SerializeField] private TextMeshProUGUI rollText;
     public void RollDice()
     {
-        int fir = Random.Range(1, 7);
-        int sec = Random.Range(1, 7);
-        print($"{fir }/{sec}");
-        Board.Instance.RollDice(new int[2] { fir, sec });
+        //int fir = Random.Range(1, 7);
+        //int sec = Random.Range(1, 7);
+        //print($"{fir }/{sec}");
+        //Board.Instance.RollDice(new int[2] { fir, sec });
+        C_DrawDice dice = new C_DrawDice();
+        NetworkManager.Instance.Send(dice.Write());
     }
 
     public override void TurnOff()

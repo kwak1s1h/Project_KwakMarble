@@ -22,7 +22,7 @@ public class GameManager : MonoSingleton<GameManager>
         yield return board.InitBoard();
         for (int i = 0; i < users.Count; i++)
         {
-            charaterDic.Add(users[i], board.SpawnCharater());
+            charaterDic.Add(users[i], board.SpawnCharater(users[i]));
             yield return new WaitForSeconds(0.2f);
         }
 

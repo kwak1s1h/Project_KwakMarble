@@ -17,5 +17,6 @@
         S_SetTurn,
         S_Ready,
         S_GameStart,
+        S_DrawDice,
     }
 }

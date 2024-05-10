@@ -79,7 +79,17 @@ namespace Server
             if (clientSession == null) return;
             if (clientSession.Room == null) return;
 
+            clientSession.Room.StartGame();
+        }
 
+        public static void C_DrawDiceHandler(PacketSession session, IPacket packet)
+        {
+            C_DrawDice loaded = packet as C_DrawDice;
+            ClientSession clientSession = session as ClientSession;
+            if (clientSession == null) return;
+            if (clientSession.Room == null) return;
+
+            clientSession.Room.DrawDice(clientSession);
         }
     }
 }

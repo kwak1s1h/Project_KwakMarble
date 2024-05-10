@@ -26,7 +26,7 @@ public class Board : MonoSingleton<Board>
         floor.DOMoveY(0, 0.5f);
     }
 
-    public void RollDice(int[] result)
+    public void RollDice(int[] result, int id, int dest)
     {
         for (int i = 0; i < result.Length; i++)
         {

@@ -45,6 +45,9 @@ public class PacketManager
 
         _makeFunc.Add((ushort)PacketID.C_GameLoaded, MakePacket<C_GameLoaded>);
         _handler.Add((ushort)PacketID.C_GameLoaded, PacketHandler.C_GameLoadedHandler);
+
+        _makeFunc.Add((ushort)PacketID.C_DrawDice, MakePacket<C_DrawDice>);
+        _handler.Add((ushort)PacketID.C_DrawDice, PacketHandler.C_DrawDiceHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer, Action<PacketSession, IPacket> onRecvCallback = null)

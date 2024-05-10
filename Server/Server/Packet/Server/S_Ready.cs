@@ -12,7 +12,7 @@ namespace Server.Packet.Server
         public int id;
         public bool value;
 
-        public ushort Protocol { get { return (ushort)PacketID.S_SetTurn; } }
+        public ushort Protocol { get { return (ushort)PacketID.S_Ready; } }
 
         public void Read(ArraySegment<byte> segment)
         {

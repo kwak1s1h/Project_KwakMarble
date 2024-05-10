@@ -78,7 +78,25 @@ namespace DummyClient
 
         public static void S_SetTurnHandler(PacketSession session, IPacket packet)
         {
-            throw new NotImplementedException();
+            S_SetTurn turn = packet as S_SetTurn;
+            ServerSession serverSession = session as ServerSession;
+            if (serverSession == null) return;
+            
+            if(turn.id == serverSession.SessionId)
+            {
+                UIManager.Instance.TurnOffAllUI();
+                UIManager.Instance.GetUI<DiceRollUI>();
+            }
+        }
+
+        public static void S_DrawDiceHandler(PacketSession session, IPacket packet)
+        {
+            S_DrawDice dice = packet as S_DrawDice;
+            ServerSession serverSession = session as ServerSession;
+            if (serverSession == null) return;
+
+            UIManager.Instance.TurnOffAllUI();
+            Board.Instance.RollDice(dice.diceValue.ToArray(), dice.id, dice.dest);
         }
     }
 }

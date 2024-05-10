@@ -32,6 +32,7 @@ namespace Server
                 Console.WriteLine($"세션 추가 : {session.SessionId}");
 
                 session.Room = this;
+                session.Current = 0;
                 
                 // 신규 유저 접속시, 기존 유저 목록 전송
                 //S_PlayerList players = new S_PlayerList();
@@ -102,9 +103,21 @@ namespace Server
         public void DrawDice(ClientSession session)
         {
             Random rand = new Random();
-            int[] rands = new int[2] { rand.Next(1, 7), rand.Next(1, 7) };
+            List<int> rands = new List<int> { rand.Next(1, 7), rand.Next(1, 7) };
+            int sum = 0;
+            foreach(int randInt in rands)
+            {
+                sum += randInt;
+            }
+            session.Current += sum;
 
-            //BroadCast()
+            S_DrawDice dice = new S_DrawDice
+            {
+                id = session.SessionId,
+                diceValue = rands,
+                dest = session.Current
+            };
+            BroadCast(dice.Write());
 
             _turnIdx++;
             if(_turnIdx >= _sessions.Count)
