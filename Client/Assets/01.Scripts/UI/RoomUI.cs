@@ -31,10 +31,10 @@ public class RoomUI : UIBase
         profile.SetId(uuid);
         uuidByProfiles.Add(uuid, profile);
     }
-    public void GameStart()
+    public void GameStart(List<int> users)
     {
         UIManager.Instance.TurnOffAllUI();
-        GameManager.Instance.GameStart();
+        GameManager.Instance.GameStart(users);
     }
     public void ChangeReady(int uuid, bool isReady)
     {

@@ -73,7 +73,7 @@ namespace DummyClient
             S_GameStart start = packet as S_GameStart;
             ServerSession serverSession = session as ServerSession;
             RoomUI roomUI = UIManager.Instance.GetUI<RoomUI>();
-            roomUI.GameStart();
+            roomUI.GameStart(start.users);
         }
 
         public static void S_SetTurnHandler(PacketSession session, IPacket packet)
