@@ -11,7 +11,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
-        board = FindObjectOfType<Board>();
+        board = Board.Instance;
     }
     public void GameStart(List<int> users)
     {

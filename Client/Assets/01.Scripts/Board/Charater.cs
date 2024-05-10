@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class Charater : MonoBehaviour
 {
     public event Action OnMoveEndComplete;
+
+    public TextMeshPro tmp;
 
     private int _mapIdx;
     public int MapIdx => _mapIdx;
@@ -20,7 +23,10 @@ public class Charater : MonoBehaviour
             UIManager.Instance.GetUI<CreateBuildingUI>();
         };
     }
-
+    public void Init(int uuid)
+    {
+        tmp.text = uuid.ToString();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -31,14 +37,22 @@ public class Charater : MonoBehaviour
     public void Move(int diceValue)
     {
         int value = diceValue;
-        _mapIdx = _mapIdx + 1;
-        _mapIdx %= Board.Instance.BoardSize;
-        transform.DOJump(Board.Instance.GetPlacePos(_mapIdx), 1f, 1, 0.1f).OnComplete(() =>
-          {
-              value--;
-              ContinueJump(value);
-              Board.Instance.WavePlace(_mapIdx);
-          });
+        Sequence seq = DOTween.Sequence();
+        for (int i = 0; i < value; i++)
+        {
+            _mapIdx = _mapIdx + 1;
+            _mapIdx %= Board.Instance.BoardSize;
+            int idx = _mapIdx;
+            seq.Append(
+            transform.DOJump(Board.Instance.GetPlacePos(idx), 1f, 1, 0.1f).OnComplete(() =>
+              {
+                  //value--;
+                  //ContinueJump(value);
+                  Board.Instance.WavePlace(idx);
+              }));
+
+        }
+        seq.OnComplete(() => OnMoveEndComplete?.Invoke());
     }
     private void ContinueJump(int value)
     {
