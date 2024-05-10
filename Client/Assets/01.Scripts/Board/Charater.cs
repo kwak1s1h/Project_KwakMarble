@@ -27,18 +27,11 @@ public class Charater : MonoBehaviour
     {
         tmp.text = uuid.ToString();
     }
-    private void Update()
+
+    public void Move(int dest)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Move(10);
-        }
-    }
-    public void Move(int diceValue)
-    {
-        int value = diceValue;
         Sequence seq = DOTween.Sequence();
-        for (int i = 0; i < value; i++)
+        while(_mapIdx != dest)
         {
             _mapIdx = _mapIdx + 1;
             _mapIdx %= Board.Instance.BoardSize;
@@ -50,7 +43,6 @@ public class Charater : MonoBehaviour
                   //ContinueJump(value);
                   Board.Instance.WavePlace(idx);
               }));
-
         }
         seq.OnComplete(() => OnMoveEndComplete?.Invoke());
     }
