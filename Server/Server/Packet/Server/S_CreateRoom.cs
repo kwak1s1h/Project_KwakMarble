@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Server.Packet.Server
 {
-    public class S_CreateRoom
+    public class S_CreateRoom : IPacket
     {
         public string roomCode;
 
@@ -18,10 +18,10 @@ namespace Server.Packet.Server
             ushort count = 0;
             count += sizeof(ushort);
             count += sizeof(ushort);
-            ushort nameLen = BitConverter.ToUInt16(segment.Array, segment.Offset + count);
+            ushort codeLen = BitConverter.ToUInt16(segment.Array, segment.Offset + count);
             count += sizeof(ushort);
-            this.roomCode = Encoding.Unicode.GetString(segment.Array, segment.Offset + count, nameLen);
-            count += nameLen;
+            this.roomCode = Encoding.Unicode.GetString(segment.Array, segment.Offset + count, codeLen);
+            count += codeLen;
         }
 
         public ArraySegment<byte> Write()
@@ -30,7 +30,7 @@ namespace Server.Packet.Server
             ushort count = 0;
 
             count += sizeof(ushort);
-            Array.Copy(BitConverter.GetBytes((ushort)PacketID.S_SessionInfo), 0, segment.Array, segment.Offset + count, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes(Protocol), 0, segment.Array, segment.Offset + count, sizeof(ushort));
             count += sizeof(ushort);
             ushort codeLen = (ushort)Encoding.Unicode.GetBytes(
                 this.roomCode, 0, this.roomCode.Length, segment.Array, segment.Offset + sizeof(ushort) + count);   // UTF16으로 name의 길이 반환

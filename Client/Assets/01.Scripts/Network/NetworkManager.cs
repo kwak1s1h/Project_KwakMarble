@@ -13,6 +13,23 @@ using static System.Collections.Specialized.BitVector32;
 public class NetworkManager : MonoBehaviour
 {   // DummyClient 역할
 
+    private static NetworkManager _instance;
+    public static NetworkManager Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<NetworkManager>();
+            }
+            if(_instance == null)
+            {
+                Debug.LogError("NetworkManager not exist!");
+            }
+            return _instance;
+        }
+    }
+
     // 서버 플래그.	
     public bool m_isServer = false;
     // 접속 플래그.
@@ -52,6 +69,7 @@ public class NetworkManager : MonoBehaviour
             Debug.Log("연결 시작.");
             IPEndPoint endPoint = new IPEndPoint(ipAddr, port); // IP주소, 포트번호 입력
             Connector connector = new Connector();
+
             connector.Connect(endPoint, () => { return _session; }, 1);
             m_isConnected = true;
         }
@@ -98,5 +116,10 @@ public class NetworkManager : MonoBehaviour
         List<IPacket> list = PacketQueue.Instance.PopAll();
         foreach(IPacket packet in list)
             PacketManager.Instance.HandlePacket(_session, packet);
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 }

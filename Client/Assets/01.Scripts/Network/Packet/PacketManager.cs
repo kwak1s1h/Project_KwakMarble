@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace DummyClient {
     class PacketManager 
@@ -31,6 +32,21 @@ namespace DummyClient {
         {   // 멀티스레드 개입 차단 필요
             _makeFunc.Add((ushort)PacketID.S_SessionInfo, MakePacket<S_SessionInfo>);
             _handler.Add((ushort)PacketID.S_SessionInfo, PacketHandler.S_SessionInfoHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_CreateRoom, MakePacket<S_CreateRoom>);
+            _handler.Add((ushort)PacketID.S_CreateRoom, PacketHandler.S_CreateRoomHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_EnterRoom, MakePacket<S_EnterRoom>);
+            _handler.Add((ushort)PacketID.S_EnterRoom, PacketHandler.S_EnterRoomHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_EnterRoomRes, MakePacket<S_EnterRoomRes>);
+            _handler.Add((ushort)PacketID.S_EnterRoomRes, PacketHandler.S_EnterRoomResHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_Ready, MakePacket<S_Ready>);
+            _handler.Add((ushort)PacketID.S_Ready, PacketHandler.S_ReadyHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_GameStart, MakePacket<S_GameStart>);
+            _handler.Add((ushort)PacketID.S_GameStart, PacketHandler.S_GameStartHandler);
         }
 
         public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer
@@ -46,6 +62,7 @@ namespace DummyClient {
             Func<PacketSession, ArraySegment<byte>, IPacket> func = null;
             if (_makeFunc.TryGetValue(id, out func))
             {
+                Debug.Log(((PacketID)id).ToString());
                 IPacket packet = func.Invoke(session, buffer);
                 if (onRecvCallback != null) // 액션이 실행되면 Invoke 
                     onRecvCallback.Invoke(session, packet);

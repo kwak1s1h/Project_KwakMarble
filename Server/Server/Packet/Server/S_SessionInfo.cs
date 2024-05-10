@@ -24,7 +24,7 @@ namespace Server.Packet.Server
             ushort count = 0;
 
             count += sizeof(ushort);
-            Array.Copy(BitConverter.GetBytes((ushort)PacketID.S_SessionInfo), 0, segment.Array, segment.Offset + count, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes(Protocol), 0, segment.Array, segment.Offset + count, sizeof(ushort));
             count += sizeof(ushort);
             Array.Copy(BitConverter.GetBytes(sessionId), 0, segment.Array, segment.Offset + count, sizeof(int));
             count += sizeof(int);

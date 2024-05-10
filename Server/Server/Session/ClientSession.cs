@@ -8,7 +8,7 @@ namespace Server.Session
 
     // 유저네임
 
-    class ClientSession : PacketSession // 게임컨텐츠 영역
+    public class ClientSession : PacketSession // 게임컨텐츠 영역
     {                           // 데이터의 송수신 구현보다, 송수신시의 동작 작성
         public int SessionId { get; set; }
         public GameRoom Room { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server.Session
 {
-    class SessionManager
+    public class SessionManager
     {
         static SessionManager _session = new SessionManager();
         public static SessionManager instance { get { return _session; } }

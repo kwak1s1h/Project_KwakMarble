@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerCore
 {
     public class Connector
     {
         Func<Session> _sessionFactory;
+        IPEndPoint _endPoint;
 
         public void Connect(IPEndPoint endPoint, Func<Session> sessionFactory, int Dummycount = 1) 
         {
@@ -19,6 +16,7 @@ namespace ServerCore
             {
                 Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 _sessionFactory = sessionFactory;
+                _endPoint = endPoint;
                 SocketAsyncEventArgs args = new SocketAsyncEventArgs();
                 args.Completed += OnConnectCompleted;
                 args.RemoteEndPoint = endPoint;

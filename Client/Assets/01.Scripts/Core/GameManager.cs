@@ -1,3 +1,4 @@
+using Server.Packet.Client;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,5 +26,7 @@ public class GameManager : MonoSingleton<GameManager>
             yield return new WaitForSeconds(0.2f);
         }
 
+        C_GameLoaded loaded = new C_GameLoaded();
+        NetworkManager.Instance.Send(loaded.Write());
     }
 }

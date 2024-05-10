@@ -22,4 +22,6 @@ public class UIManager : MonoSingleton<UIManager>
             ui.gameObject.SetActive(false);
         }
     }
+
+    public void Log() => Debug.Log("UIManager Log");
 }

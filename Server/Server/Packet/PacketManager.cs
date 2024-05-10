@@ -27,12 +27,24 @@ public class PacketManager
         = new Dictionary<ushort, Action<PacketSession, IPacket>>();
 
     public void Register()
-    {   // 멀티스레드 개입 차단 필요
+    {
         _makeFunc.Add((ushort)PacketID.C_CreateRoom, MakePacket<C_CreateRoom>);
         _handler.Add((ushort)PacketID.C_CreateRoom, PacketHandler.C_CreateRoomHandler);
 
+        _makeFunc.Add((ushort)PacketID.C_EnterRoom, MakePacket<C_EnterRoom>);
+        _handler.Add((ushort)PacketID.C_EnterRoom, PacketHandler.C_EnterRoomHandler);
+
         _makeFunc.Add((ushort)PacketID.C_SetNickname, MakePacket<C_SetNickname>);
         _handler.Add((ushort)PacketID.C_SetNickname, PacketHandler.C_SetNicknameHandler);
+
+        _makeFunc.Add((ushort)PacketID.C_Ready, MakePacket<C_Ready>);
+        _handler.Add((ushort)PacketID.C_Ready, PacketHandler.C_ReadyHandler);
+
+        _makeFunc.Add((ushort)PacketID.C_GameStart, MakePacket<C_GameStart>);
+        _handler.Add((ushort)PacketID.C_GameStart, PacketHandler.C_GameStartHandler);
+
+        _makeFunc.Add((ushort)PacketID.C_GameLoaded, MakePacket<C_GameLoaded>);
+        _handler.Add((ushort)PacketID.C_GameLoaded, PacketHandler.C_GameLoadedHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer, Action<PacketSession, IPacket> onRecvCallback = null)

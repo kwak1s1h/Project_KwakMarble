@@ -10,7 +10,7 @@ namespace Server
     class Program
     {
         static Listener _listener = new Listener();
-        public static GameRoom Room = new GameRoom();
+        public static RoomManager RoomManager { get; private set; }
 
         private const int m_port = 8080;
 
@@ -23,8 +23,11 @@ namespace Server
             IPAddress ipAddr = iphost.AddressList[0];
             IPEndPoint endPoint = new IPEndPoint(ipAddr, m_port); // IP주소, 포트번호 입력
 
+            RoomManager = new RoomManager();
+
             _listener.init(endPoint, () => { return SessionManager.instance.Generate(); });  // GameSession 새로 만들어 매개변수 대입
             Console.WriteLine("Listening...(영업중이야)");                   // 세부 구현은 OnAcceptCompleted에서 상세구현
+
 
             while (true)
             {

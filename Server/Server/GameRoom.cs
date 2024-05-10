@@ -10,16 +10,24 @@ using ServerCore;
 
 namespace Server
 {
-    class GameRoom
+    public class GameRoom
     {
         List<ClientSession> _sessions = new List<ClientSession>();
         object _lock = new object();
 
+        private string _id;
+        public string Id
+        {
+            get => _id; set => _id = value;
+        }
 
         public void Enter(ClientSession session)
         {
             lock(_lock)
             {   // 신규 유저 추가
+                S_EnterRoom enter = new S_EnterRoom { id = session.SessionId };
+                BroadCast(enter.Write());
+
                 _sessions.Add(session);
                 Console.WriteLine($"세션 추가 : {session.SessionId}");
 
@@ -71,5 +79,38 @@ namespace Server
             }
         }
 
+        public List<int> GetAllUserInfo()
+        {
+            return _sessions.Select(s => s.SessionId).ToList();
+        }
+
+        private int _turnIdx;
+        public void StartGame()
+        {
+            _turnIdx = 0;
+            SetTurn();
+        }
+
+        private void SetTurn()
+        {
+            int id = _sessions[_turnIdx].SessionId;
+
+            S_SetTurn turn = new S_SetTurn { id = id };
+            BroadCast(turn.Write());
+        }
+
+        public void DrawDice(ClientSession session)
+        {
+            Random rand = new Random();
+            int[] rands = new int[2] { rand.Next(1, 7), rand.Next(1, 7) };
+
+            //BroadCast()
+
+            _turnIdx++;
+            if(_turnIdx >= _sessions.Count)
+            {
+                _turnIdx = 0;
+            }
+        }
     }
 }
