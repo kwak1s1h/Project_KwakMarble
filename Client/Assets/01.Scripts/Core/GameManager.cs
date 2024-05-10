@@ -13,16 +13,16 @@ public class GameManager : MonoSingleton<GameManager>
     {
         board = FindObjectOfType<Board>();
     }
-    public void GameStart()
+    public void GameStart(List<int> users)
     {
-        StartCoroutine(InitCor());
+        StartCoroutine(InitCor(users));
     }
-    private IEnumerator InitCor()
+    private IEnumerator InitCor(List<int> users)
     {
         yield return board.InitBoard();
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < users.Count; i++)
         {
-            charaterDic.Add(1, board.SpawnCharater());
+            charaterDic.Add(users[i], board.SpawnCharater());
             yield return new WaitForSeconds(0.2f);
         }
 

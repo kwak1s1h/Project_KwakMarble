@@ -47,6 +47,9 @@ namespace DummyClient {
 
             _makeFunc.Add((ushort)PacketID.S_GameStart, MakePacket<S_GameStart>);
             _handler.Add((ushort)PacketID.S_GameStart, PacketHandler.S_GameStartHandler);
+
+            _makeFunc.Add((ushort)PacketID.S_SetTurn, MakePacket<S_SetTurn>);
+            _handler.Add((ushort)PacketID.S_SetTurn, PacketHandler.S_SetTurnHandler);
         }
 
         public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer

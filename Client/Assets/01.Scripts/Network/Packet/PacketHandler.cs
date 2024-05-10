@@ -75,6 +75,11 @@ namespace DummyClient
             RoomUI roomUI = UIManager.Instance.GetUI<RoomUI>();
             roomUI.GameStart();
         }
+
+        public static void S_SetTurnHandler(PacketSession session, IPacket packet)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
