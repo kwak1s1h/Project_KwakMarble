@@ -10,7 +10,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
-        board = FindObjectOfType<Board>();
+        board = Board.Instance;
     }
     public void GameStart()
     {
@@ -21,7 +21,7 @@ public class GameManager : MonoSingleton<GameManager>
         yield return board.InitBoard();
         for (int i = 0; i < 1; i++)
         {
-            charaterDic.Add(1, board.SpawnCharater());
+            charaterDic.Add(1, board.SpawnCharater(1123213124));
             yield return new WaitForSeconds(0.2f);
         }
 
