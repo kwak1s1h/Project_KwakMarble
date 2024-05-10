@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class Place : MonoBehaviour
 {
-    private List<GameObject> building = new();
+    [SerializeField] private List<GameObject> building = new();
+    [SerializeField] private List<Transform> buildingPos = new();
 
     public Transform placeTrm;
     private Sequence seq = null;
@@ -38,12 +39,24 @@ public class Place : MonoBehaviour
     }
     public void CreateBuilding(BuildingType type)
     {
+        StartCoroutine(BuildCor(type));
+    }
+    private IEnumerator BuildCor(BuildingType type)
+    {
         for (int i = 0; i < 3; i++)
         {
-            if(((int)type & (int)BuildingType.Monitor << i) > 0)
+            if (((int)type & (int)BuildingType.Monitor << i) > 0)
             {
-
+                BuildingSeq(i);
             }
+            yield return new WaitForSeconds(0.2f);
         }
+    }
+    private void BuildingSeq(int idx)
+    {
+        building[idx].SetActive(true);
+        Transform trm = building[idx].transform;
+        trm.position = buildingPos[idx].position + Vector3.up * 5;
+        trm.DOMove(buildingPos[idx].position, 0.3f).SetEase(Ease.OutBounce);
     }
 }
